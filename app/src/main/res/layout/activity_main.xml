@@ -15,6 +15,8 @@
        app:layout_constraintEnd_toEndOf="parent"
        app:startColor="#FF0000"
        app:labelText="Hello World"
+       app:labelColor="@color/white"
+       app:labelSize="20dp"
        app:stopColor="#0000FF"
        app:startX="0.5"
        app:startY="0.0"
