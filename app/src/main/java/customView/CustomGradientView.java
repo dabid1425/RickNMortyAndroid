@@ -26,9 +26,6 @@ public class CustomGradientView extends View {
     private float cornerRadius;
     private int borderColor;
     private float borderWidth;
-    private String labelText;
-    private int labelColor;
-    private float labelSize;
 
     private Rect textBounds;
     public CustomGradientView(Context context, AttributeSet attrs) {
@@ -40,9 +37,7 @@ public class CustomGradientView extends View {
 
         // Retrieve attributes from XML
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomGradientView);
-        labelText = typedArray.getString(R.styleable.CustomGradientView_labelText);
-        labelColor = typedArray.getColor(R.styleable.CustomGradientView_labelColor, Color.BLACK);
-        labelSize = typedArray.getDimension(R.styleable.CustomGradientView_labelSize, 12f);
+
 
         startColor = typedArray.getColor(R.styleable.CustomGradientView_startColor, Color.RED);
         stopColor = typedArray.getColor(R.styleable.CustomGradientView_stopColor, Color.BLUE);
@@ -84,12 +79,7 @@ public class CustomGradientView extends View {
         canvas.drawRoundRect(getRectF(), cornerRadius, cornerRadius, paint);
         paint.reset();
         paint.setAntiAlias(true);
-        paint.setColor(labelColor);
-        paint.setTextSize(labelSize);
-        paint.getTextBounds(labelText, 0, labelText.length(), textBounds);
-        int x = getWidth() / 2 - textBounds.width() / 2;
-        int y = getHeight() / 2 + textBounds.height() / 2;
-        canvas.drawText(labelText, x, y, paint);
+
     }
 
     private RectF getRectF() {
