@@ -1,13 +1,17 @@
 package com.example.ricknmortyandroid.characters;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ricknmortyandroid.Enums.Status;
 import com.example.ricknmortyandroid.R;
 import com.squareup.picasso.Picasso;
 
@@ -43,6 +47,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
     static class CharacterViewHolder extends RecyclerView.ViewHolder {
         private ImageView characterImageView;
+        private LinearLayout linearLayoutBackground;
         private TextView nameTextView;
         private TextView statusTextView;
         private TextView speciesTextView;
@@ -50,6 +55,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
         CharacterViewHolder(View itemView) {
             super(itemView);
+            linearLayoutBackground = itemView.findViewById(R.id.linearLayoutBackground);
             characterImageView = itemView.findViewById(R.id.characterImageView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             statusTextView = itemView.findViewById(R.id.statusTextView);
@@ -62,7 +68,21 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
             statusTextView.setText(character.getStatus());
             speciesTextView.setText(character.getSpecies());
             genderTextView.setText(character.getGender());
-
+            // Get the background drawable
+            GradientDrawable backgroundDrawable = (GradientDrawable) linearLayoutBackground.getBackground();
+            int color = Color.GREEN; // Default color is green
+            switch (Status.fromString(character.getStatus())) {
+                case DEAD:
+                    color = Color.RED;
+                    break;
+                case ALIVE:
+                    color = Color.GREEN;
+                    break;
+                case UNKNOWN:
+                    color = Color.YELLOW;
+                    break;
+            }
+            backgroundDrawable.setStroke(2, color); // Replace 2 with the desired border width
             // Load character image using Picasso or Glide
             Picasso.get().load(character.getImage()).into(characterImageView);
         }

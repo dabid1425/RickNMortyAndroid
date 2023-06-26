@@ -3,17 +3,17 @@ package com.example.ricknmortyandroid.characters;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.ricknmortyandroid.API.CharacterRepository;
+import com.example.ricknmortyandroid.API.Repository;
 
 import java.util.List;
 
 public class CharacterViewModel extends ViewModel {
-    private CharacterRepository characterRepository;
+    private Repository repository;
     private LiveData<List<Character>> charactersLiveData;
 
     public CharacterViewModel() {
-        characterRepository = new CharacterRepository();
-        charactersLiveData = characterRepository.getCharacters();
+        repository = new Repository();
+        charactersLiveData = repository.getCharacters();
     }
 
     public LiveData<List<Character>> getCharacters() {
@@ -21,7 +21,7 @@ public class CharacterViewModel extends ViewModel {
     }
 
     public void loadCharacters() {
-        characterRepository.loadCharacters();
+        repository.loadCharacters();
     }
 
 }
