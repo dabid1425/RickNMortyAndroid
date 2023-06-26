@@ -1,14 +1,18 @@
 package com.example.ricknmortyandroid.episodes;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ricknmortyandroid.Enums.Status;
 import com.example.ricknmortyandroid.R;
 import com.example.ricknmortyandroid.locations.Location;
 import com.squareup.picasso.Picasso;
@@ -47,10 +51,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
         private TextView nameTextView;
         private TextView airDateTextView;
         private TextView episodeTextView;
+        private LinearLayout linearLayoutBackground;
 
         EpisodeViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
+            linearLayoutBackground = itemView.findViewById(R.id.linearLayoutBackground);
             airDateTextView = itemView.findViewById(R.id.airDateTextView);
             episodeTextView = itemView.findViewById(R.id.episodeTextView);
         }
@@ -59,6 +65,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
             nameTextView.setText(episode.getName());
             airDateTextView.setText(episode.getAirDate());
             episodeTextView.setText(episode.getEpisode());
+            GradientDrawable backgroundDrawable = (GradientDrawable) linearLayoutBackground.getBackground();
+            backgroundDrawable.setStroke(2, Color.BLACK); // Replace 2 with the desired border width
         }
     }
 }
