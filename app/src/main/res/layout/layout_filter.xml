@@ -42,7 +42,7 @@
                 android:layout_marginEnd="@dimen/fifteen_dp"
                 android:background="@null"
                 android:fontFamily="@font/sf_compact_regular"
-                android:hint="@string/searchCharacters"
+                android:hint="Search"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
