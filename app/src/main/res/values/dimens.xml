@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+	<dimen name="dimen_16">16dp</dimen>
+	<dimen name="dimen_24">24dp</dimen>
+	<dimen name="dimen_10">10dp</dimen>
+	<dimen name="dimen_3">3dp</dimen>
+	<dimen name="dimen_4">4dp</dimen>
+	<dimen name="dimen_5">5dp</dimen>
+	<dimen name="dimen_1">1dp</dimen>
+	<dimen name="dimen_30">30dp</dimen>
+
+	<!--Text size-->
+	<dimen name="font_20">20sp</dimen>
+	<dimen name="textsize_9sp">9sp</dimen>
+	<dimen name="textsize_10sp">10sp</dimen>
+	<dimen name="textsize_11sp">11sp</dimen>
+	<dimen name="textsize_12sp">12sp</dimen>
+	<dimen name="textsize_14sp">14sp</dimen>
+	<dimen name="textsize_13sp">13sp</dimen>
+	<dimen name="textsize_16sp">16sp</dimen>
+	<dimen name="textsize_17sp">17sp</dimen>
+	<dimen name="textsize_18sp">18sp</dimen>
+	<dimen name="textsize_20sp">20sp</dimen>
+	<dimen name="textsize_22sp">22sp</dimen>
+	<dimen name="textsize_24sp">24sp</dimen>
+	<dimen name="textsize_26sp">26sp</dimen>
+	<dimen name="textsize_28sp">28sp</dimen>
+	<dimen name="textsize_30sp">30sp</dimen>
+	<dimen name="textsize_32sp">32sp</dimen>
+	<dimen name="textsize_33sp">33sp</dimen>
+	<dimen name="textsize_34sp">34sp</dimen>
+	<dimen name="textsize_35sp">35sp</dimen>
+	<dimen name="textsize_36sp">36sp</dimen>
+	<dimen name="textsize_40sp">40sp</dimen>
+
+	<!--Dimensions size-->
+	<dimen name="zero_dp">0dp</dimen>
+	<dimen name="zero_point_dp">0.5dp</dimen>
+	<dimen name="one_dp">1dp</dimen>
+	<dimen name="two_dp">2dp</dimen>
+	<dimen name="three_dp">3dp</dimen>
+	<dimen name="four_dp">4dp</dimen>
+	<dimen name="five_dp">5dp</dimen>
+	<dimen name="six_dp">6dp</dimen>
+	<dimen name="seven_dp">7dp</dimen>
+	<dimen name="eight_dp">8dp</dimen>
+	<dimen name="nine_dp">9dp</dimen>
+	<dimen name="ten_dp">10dp</dimen>
+	<dimen name="twelve_dp">12dp</dimen>
+	<dimen name="thirteen">13dp</dimen>
+	<dimen name="fourteen_dp">14dp</dimen>
+	<dimen name="fifteen_dp">15dp</dimen>
+	<dimen name="sixteen_dp">16dp</dimen>
+	<dimen name="eighteen_dp">18dp</dimen>
+	<dimen name="twenty_dp">20dp</dimen>
+	<dimen name="twenty_two_dp">22dp</dimen>
+	<dimen name="twenty_four_dp">24dp</dimen>
+	<dimen name="twenty_eight_dp">28dp</dimen>
+	<dimen name="twenty_five_dp">25dp</dimen>
+	<dimen name="thirty_dp">30dp</dimen>
+	<dimen name="thirty_two_dp">32dp</dimen>
+	<dimen name="thirty_five_dp">35dp</dimen>
+	<dimen name="fourty_dp">40dp</dimen>
+	<dimen name="fourty_two_dp">42dp</dimen>
+	<dimen name="fourty_three_dp">43dp</dimen>
+	<dimen name="fourty_four_dp">44dp</dimen>
+	<dimen name="fourty_five_dp">45dp</dimen>
+	<dimen name="fourty_eight_dp">48dp</dimen>
+	<dimen name="fifty_dp">50dp</dimen>
+	<dimen name="fifty_five_dp">55dp</dimen>
+	<dimen name="sixty_dp">60dp</dimen>
+	<dimen name="sixty_four_dp">64dp</dimen>
+	<dimen name="seventy_dp">70dp</dimen>
+	<dimen name="eighty_dp">80dp</dimen>
+	<dimen name="ninty_dp">90dp</dimen>
+	<dimen name="hundred_dp">100dp</dimen>
+	<dimen name="one_ten_dp">110dp</dimen>
+	<dimen name="one_twenty_dp">120dp</dimen>
+	<dimen name="one_thirty_dp">130dp</dimen>
+	<dimen name="one_forty_dp">140dp</dimen>
+	<dimen name="one_fifty_dp">150dp</dimen>
+	<dimen name="one_sixty_dp">160dp</dimen>
+	<dimen name="one_seventy_dp">170dp</dimen>
+	<dimen name="one_nintyfive_dp">195dp</dimen>
+	<dimen name="two_hundred_dp">200dp</dimen>
+	<dimen name="three_hundred_dp">300dp</dimen>
+	<dimen name="fifty_two_dp">52dp</dimen>
+
+
+	<dimen name="seekbar_thumb_width">25dp</dimen>
+	<dimen name="chipHeight">40dp</dimen>
+	<dimen name="chipMargin">90dp</dimen>
+	<dimen name="letterSpacing" format="float" type="integer">0.05</dimen>
+
+	<dimen name="activity_horizontal_margin">16dp</dimen>
+	<dimen name="activity_vertical_margin">16dp</dimen>
+	<dimen name="item_margin">8dp</dimen>
+	<dimen name="column_width">80dp</dimen>
+
+	<dimen name="pickerview_topbar_height">44dp</dimen>
+	<!--paddingLeft -->
+	<dimen name="pickerview_topbar_paddingleft">10dp</dimen>
+	<!--paddingRight -->
+	<dimen name="pickerview_topbar_paddingright">30dp</dimen>
+	<dimen name="pickerview_topbar_btn_textsize">20sp</dimen>
+	<dimen name="pickerview_topbar_title_textsize">21sp</dimen>
+	<dimen name="pickerview_textsize">20sp</dimen>
+
+	<dimen name="standard_55">55dp</dimen>
+	<dimen name="standard_105">105dp</dimen>
+	<dimen name="standard_155">155dp</dimen>
+
+</resources>

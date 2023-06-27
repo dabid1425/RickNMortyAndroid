@@ -1,13 +1,11 @@
 package com.example.ricknmortyandroid.characters;
 
-import com.example.ricknmortyandroid.Enums.Gender;
-import com.example.ricknmortyandroid.Enums.Status;
-import com.example.ricknmortyandroid.characters.Origin;
-import com.example.ricknmortyandroid.characters.SingleLocation;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.List;
 
-public class Character {
+public class Character implements Parcelable {
     private int id;
     private String name;
     private String status;
@@ -116,4 +114,52 @@ public class Character {
     public void setCreated(String created) {
         this.created = created;
     }
+
+        protected Character(Parcel in) {
+            id = in.readInt();
+            name = in.readString();
+            status = in.readString();
+            species = in.readString();
+            type = in.readString();
+            gender = in.readString();
+            origin = in.readParcelable(Origin.class.getClassLoader());
+            location = in.readParcelable(SingleLocation.class.getClassLoader());
+            image = in.readString();
+            episode = in.createStringArrayList();
+            url = in.readString();
+            created = in.readString();
+        }
+
+        public static final Creator<Character> CREATOR = new Creator<Character>() {
+            @Override
+            public Character createFromParcel(Parcel in) {
+                return new Character(in);
+            }
+
+            @Override
+            public Character[] newArray(int size) {
+                return new Character[size];
+            }
+        };
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(id);
+            dest.writeString(name);
+            dest.writeString(status);
+            dest.writeString(species);
+            dest.writeString(type);
+            dest.writeString(gender);
+            dest.writeParcelable(origin, flags);
+            dest.writeParcelable(location, flags);
+            dest.writeString(image);
+            dest.writeStringList(episode);
+            dest.writeString(url);
+            dest.writeString(created);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
 }

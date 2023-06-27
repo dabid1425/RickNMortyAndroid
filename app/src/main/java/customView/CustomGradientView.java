@@ -26,18 +26,20 @@ public class CustomGradientView extends View {
     private float cornerRadius;
     private int borderColor;
     private float borderWidth;
+    private int shadowColor;
+    private float shadowOpacity;
+    private float shadowOffsetX;
+    private float shadowOffsetY;
 
     private Rect textBounds;
+
     public CustomGradientView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
     private void init(AttributeSet attrs) {
-
-        // Retrieve attributes from XML
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomGradientView);
-
 
         startColor = typedArray.getColor(R.styleable.CustomGradientView_startColor, Color.RED);
         stopColor = typedArray.getColor(R.styleable.CustomGradientView_stopColor, Color.BLUE);
@@ -48,7 +50,13 @@ public class CustomGradientView extends View {
         cornerRadius = typedArray.getDimension(R.styleable.CustomGradientView_cornerRadius, 0f);
         borderColor = typedArray.getColor(R.styleable.CustomGradientView_borderColor, Color.BLACK);
         borderWidth = typedArray.getDimension(R.styleable.CustomGradientView_borderWidth, 0f);
+        shadowColor = typedArray.getColor(R.styleable.CustomGradientView_shadowColor, Color.BLACK);
+        shadowOpacity = typedArray.getFloat(R.styleable.CustomGradientView_shadowOpacity, 0f);
+        shadowOffsetX = typedArray.getDimension(R.styleable.CustomGradientView_shadowOffsetX, 0f);
+        shadowOffsetY = typedArray.getDimension(R.styleable.CustomGradientView_shadowOffsetY, 0f);
+
         typedArray.recycle();
+
         paint = new Paint();
         textBounds = new Rect();
     }
@@ -56,6 +64,16 @@ public class CustomGradientView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        // Draw the shadow
+        if (shadowOpacity > 0f) {
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(shadowColor);
+            paint.setAlpha((int) (shadowOpacity * 255));
+            paint.setShadowLayer(cornerRadius, shadowOffsetX, shadowOffsetY, shadowColor);
+            canvas.drawRoundRect(getRectF(), cornerRadius, cornerRadius, paint);
+        }
+
         // Draw the border
         if (borderWidth > 0) {
             paint.setStyle(Paint.Style.STROKE);
@@ -79,7 +97,6 @@ public class CustomGradientView extends View {
         canvas.drawRoundRect(getRectF(), cornerRadius, cornerRadius, paint);
         paint.reset();
         paint.setAntiAlias(true);
-
     }
 
     private RectF getRectF() {

@@ -10,6 +10,7 @@ import com.example.ricknmortyandroid.episodes.EpisodeResponse;
 import com.example.ricknmortyandroid.locations.Location;
 import com.example.ricknmortyandroid.locations.LocationResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +21,21 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Repository {
+    public interface EpisodesCallback {
+        void onEpisodesLoaded(List<Episode> episodes);
+        void onFailure(String errorMessage);
+    }
+    public interface CharacterCallback {
+        void onCharacterLoaded(Character character);
+        void onFailure(String errorMessage);
+    }
     private RickAndMortyApiService apiService;
     private MutableLiveData<List<Character>> charactersLiveData;
     private MutableLiveData<List<Location>> locationsLiveData;
     private MutableLiveData<List<Episode>> episodesLiveData;
     private int currentPage = 1;
     private boolean isFetchingData = false;
-
+    private static Repository instance;
     private boolean isDonePagingData = false;
 
     public Repository() {
@@ -39,6 +48,12 @@ public class Repository {
         charactersLiveData = new MutableLiveData<>();
         locationsLiveData = new MutableLiveData<>();
         episodesLiveData = new MutableLiveData<>();
+    }
+    public static Repository getInstance() {
+        if (instance == null) {
+            instance = new Repository();
+        }
+        return instance;
     }
 
     public LiveData<List<Character>> getCharacters() {
@@ -87,6 +102,55 @@ public class Repository {
             public void onFailure(Call<CharacterResponse> call, Throwable t) {
                 // Handle failure
                 isFetchingData = false;
+            }
+        });
+    }
+
+    public void getEpisodes(List<String> episodeUrls, EpisodesCallback callback) {
+        List<Call<Episode>> episodeCalls = new ArrayList<>();
+
+        for (String url : episodeUrls) {
+            Call<Episode> episodeCall = apiService.getEpisodeByUrl(url);
+            episodeCalls.add(episodeCall);
+        }
+
+        List<Episode> episodes = new ArrayList<>();
+
+        for (Call<Episode> call : episodeCalls) {
+            try {
+                Response<Episode> response = call.execute();
+                if (response.isSuccessful()) {
+                    Episode episode = response.body();
+                    if (episode != null) {
+                        episodes.add(episode);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        callback.onEpisodesLoaded(episodes);
+    }
+
+    public void getCharacter(int characterId, CharacterCallback callback) {
+        Call<Character> call = apiService.getCharacter(characterId);
+        call.enqueue(new Callback<Character>() {
+            @Override
+            public void onResponse(Call<Character> call, Response<Character> response) {
+                if (response.isSuccessful()) {
+                    Character character = response.body();
+                    if (character != null) {
+                        callback.onCharacterLoaded(character);
+                    }
+                } else {
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Character> call, Throwable t) {
+                callback.onFailure(t.getMessage());
             }
         });
     }

@@ -1,5 +1,5 @@
 package com.example.ricknmortyandroid.characters;
-import android.graphics.Color;
+
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +20,15 @@ import java.util.List;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder> {
     private List<Character> characters = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
 
     public void setCharacters(List<Character> characters) {
         this.characters = characters;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -45,9 +50,9 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
         return characters.size();
     }
 
-    static class CharacterViewHolder extends RecyclerView.ViewHolder {
+    class CharacterViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout backgroundGradient;
         private ImageView characterImageView;
-        private LinearLayout linearLayoutBackground;
         private TextView nameTextView;
         private TextView statusTextView;
         private TextView speciesTextView;
@@ -55,12 +60,25 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
         CharacterViewHolder(View itemView) {
             super(itemView);
-            linearLayoutBackground = itemView.findViewById(R.id.linearLayoutBackground);
+            backgroundGradient = itemView.findViewById(R.id.backgroundGradient);
             characterImageView = itemView.findViewById(R.id.characterImageView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             statusTextView = itemView.findViewById(R.id.statusTextView);
             speciesTextView = itemView.findViewById(R.id.speciesTextView);
             genderTextView = itemView.findViewById(R.id.genderTextView);
+
+            // Set click listener for the itemView
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            onItemClickListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
 
         void bind(Character character) {
@@ -69,22 +87,26 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
             speciesTextView.setText(character.getSpecies());
             genderTextView.setText(character.getGender());
             // Get the background drawable
-            GradientDrawable backgroundDrawable = (GradientDrawable) linearLayoutBackground.getBackground();
-            int color = Color.GREEN; // Default color is green
-            switch (Status.fromString(character.getStatus())) {
-                case DEAD:
-                    color = Color.RED;
-                    break;
+            int colorResource = R.drawable.alive_gradient;
+            switch (Status.fromString(character.getStatus())){
                 case ALIVE:
-                    color = Color.GREEN;
+                    colorResource = R.drawable.alive_gradient;
+                    break;
+                case DEAD:
+                    colorResource = R.drawable.dead_gradient;
                     break;
                 case UNKNOWN:
-                    color = Color.YELLOW;
+                    colorResource = R.drawable.unknown_gradient;
                     break;
             }
-            backgroundDrawable.setStroke(2, color); // Replace 2 with the desired border width
+            backgroundGradient.setBackgroundResource(colorResource);
             // Load character image using Picasso or Glide
             Picasso.get().load(character.getImage()).into(characterImageView);
         }
+    }
+
+    // Interface for item click callback
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">RickNMortyAndroid</string>
+    <string name="searchCharacters">Search Characters</string>
+    <string name="character_image">Search Characters</string>
     <string name="customLabel">CustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabelCustomLabel</string>
+    <string name="character_name">Character Name</string>
 </resources>

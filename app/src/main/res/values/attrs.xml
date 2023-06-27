@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CustomGradientView">
+        <attr name="shadowColor" format="color" />
         <attr name="startColor" format="color" />
         <attr name="stopColor" format="color" />
         <attr name="startX" format="float" />
         <attr name="startY" format="float" />
         <attr name="stopX" format="float" />
         <attr name="stopY" format="float" />
+        <attr name="shadowOpacity" format="float" />
+        <attr name="shadowOffsetX" format="float" />
+        <attr name="shadowOffsetY" format="float" />
         <attr name="cornerRadius" format="dimension" />
         <attr name="borderColor" format="color" />
         <attr name="borderWidth" format="dimension" />

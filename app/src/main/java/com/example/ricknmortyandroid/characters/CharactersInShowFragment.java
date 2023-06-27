@@ -1,9 +1,11 @@
 package com.example.ricknmortyandroid.characters;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,7 +65,19 @@ public class CharactersInShowFragment extends Fragment {
                 }
             }
         });
+        characterAdapter.setOnItemClickListener(new CharacterAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Character selectedCharacter = characterViewModel.getCharacterAtIndex(position);
 
+                // Create an Intent to start the new activity
+                Intent intent = new Intent(requireContext(), CharacterDetailsActivity.class);
+                intent.putExtra("selectedCharacter", selectedCharacter.getId());
+
+                startActivity(intent);
+            }
+        });
         return view;
     }
+
 }
