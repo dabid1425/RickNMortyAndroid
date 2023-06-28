@@ -23,7 +23,9 @@ public class Character implements Parcelable {
     private List<String> episode;
     private String url;
     private String created;
-
+    public Character() {
+        // Default constructor required for Parcelable
+    }
     public int getId() {
         return id;
     }

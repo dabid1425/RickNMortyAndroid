@@ -20,9 +20,9 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.character_detail_activity);
 
-        int characterId = getIntent().getIntExtra("characterId", 0);
+        String characterUrl = getIntent().getStringExtra("characterId");
         characterDetailViewModel = new ViewModelProvider(this).get(CharacterDetailViewModel.class);
-        characterDetailViewModel.loadCharacterDetail(characterId);
+        characterDetailViewModel.loadCharacterDetail(characterUrl);
 
 
         characterDetailViewModel.getCharacterData().observe(this, character -> {

@@ -1,7 +1,6 @@
 package com.example.ricknmortyandroid.API;
 
 import com.example.ricknmortyandroid.characters.Character;
-import com.example.ricknmortyandroid.characters.CharacterResponse;
 import com.example.ricknmortyandroid.characters.CharactersListResponse;
 import com.example.ricknmortyandroid.episodes.Episode;
 import com.example.ricknmortyandroid.episodes.EpisodeResponse;
@@ -28,8 +27,8 @@ public interface RickAndMortyApiService {
     Call<EpisodeResponse> getEpisodes(
             @Query("page") int page
     );
-    @GET("character/{id}")
-    Call<CharacterResponse> getCharacterById(@Path("id") int id);
+    @GET
+    Call<Character> getCharacterByUrl(@Url String url);
     @GET
     Call<Episode> getEpisodeByUrl(
             @Url String episodeUrl

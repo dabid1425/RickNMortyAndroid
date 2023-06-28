@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ricknmortyandroid.characters.Character;
-import com.example.ricknmortyandroid.characters.CharacterResponse;
 import com.example.ricknmortyandroid.characters.CharactersListResponse;
 import com.example.ricknmortyandroid.episodes.Episode;
 import com.example.ricknmortyandroid.episodes.EpisodeResponse;
 import com.example.ricknmortyandroid.locations.Location;
 import com.example.ricknmortyandroid.locations.LocationResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +69,29 @@ public class Repository {
         loadEpisodes();
         return episodesLiveData;
     }
+    public void getCharacterById(String characterUrl, final CharacterCallback callback) {
+        apiService.getCharacterByUrl(characterUrl).enqueue(new Callback<Character>() {
+            @Override
+            public void onResponse(Call<Character> call, Response<Character> response) {
+                if (response.isSuccessful()) {
+                    Character character = response.body();
+                    if (character != null) {
+                        callback.onCharacterLoaded(character);
+                    }
+                } else {
+                    // Handle error
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Character> call, Throwable t) {
+                // Handle failure
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
 
     public void loadCharacters() {
         if (isFetchingData || isDonePagingData) {
@@ -107,7 +130,7 @@ public class Repository {
         });
     }
 
-    public void getEpisodes(List<String> episodeUrls, EpisodesCallback callback) {
+    public void getEpisodes(List<String> episodeUrls, final EpisodesCallback callback) {
         List<Call<Episode>> episodeCalls = new ArrayList<>();
 
         for (String url : episodeUrls) {
@@ -115,50 +138,40 @@ public class Repository {
             episodeCalls.add(episodeCall);
         }
 
-        List<Episode> episodes = new ArrayList<>();
+        final List<Episode> episodes = new ArrayList<>();
+        final AtomicInteger count = new AtomicInteger(episodeCalls.size());
 
         for (Call<Episode> call : episodeCalls) {
-            try {
-                Response<Episode> response = call.execute();
-                if (response.isSuccessful()) {
-                    Episode episode = response.body();
-                    if (episode != null) {
-                        episodes.add(episode);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        callback.onEpisodesLoaded(episodes);
-    }
-
-    public void getCharacterById(int characterId, final CharacterCallback callback) {
-        apiService.getCharacterById(characterId).enqueue(new Callback<CharacterResponse>() {
-            @Override
-            public void onResponse(Call<CharacterResponse> call, Response<CharacterResponse> response) {
-                if (response.isSuccessful()) {
-                    CharacterResponse characterResponse = response.body();
-                    if (characterResponse != null) {
-                        Character character = characterResponse.getResult();
-                        if (character != null) {
-                            callback.onCharacterLoaded(character);
+            call.enqueue(new Callback<Episode>() {
+                @Override
+                public void onResponse(Call<Episode> call, Response<Episode> response) {
+                    if (response.isSuccessful()) {
+                        Episode episode = response.body();
+                        if (episode != null) {
+                            episodes.add(episode);
                         }
                     }
-                } else {
-                    // Handle error
-                    callback.onFailure(response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<CharacterResponse> call, Throwable t) {
-                // Handle failure
-                callback.onFailure(t.getMessage());
-            }
-        });
+                    int remaining = count.decrementAndGet();
+                    if (remaining == 0) {
+                        callback.onEpisodesLoaded(episodes);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Episode> call, Throwable t) {
+                    int remaining = count.decrementAndGet();
+                    if (remaining == 0) {
+                        callback.onEpisodesLoaded(episodes);
+                    }
+                }
+            });
+        }
     }
+
+
+
+
     public void loadLocations() {
         if (isFetchingData || isDonePagingData) {
             return;

@@ -72,7 +72,7 @@ public class CharactersInShowFragment extends Fragment {
 
                 // Create an Intent to start the new activity
                 Intent intent = new Intent(requireContext(), CharacterDetailsActivity.class);
-                intent.putExtra("characterId", selectedCharacter.getId());
+                intent.putExtra("characterId", selectedCharacter.getUrl());
 
                 startActivity(intent);
             }

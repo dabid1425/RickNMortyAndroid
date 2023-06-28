@@ -20,8 +20,8 @@ public class CharacterDetailViewModel extends ViewModel {
         episodesLiveData = new MutableLiveData<>();
     }
 
-    public void loadCharacterDetail(int characterId) {
-        repository.getCharacterById(characterId, new Repository.CharacterCallback() {
+    public void loadCharacterDetail(String characterUrl) {
+        repository.getCharacterById(characterUrl, new Repository.CharacterCallback() {
             @Override
             public void onCharacterLoaded(Character character) {
                 characterLiveData.setValue(character);
