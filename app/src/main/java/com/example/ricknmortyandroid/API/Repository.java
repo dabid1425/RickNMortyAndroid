@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ricknmortyandroid.characters.Character;
 import com.example.ricknmortyandroid.characters.CharacterResponse;
+import com.example.ricknmortyandroid.characters.CharactersListResponse;
 import com.example.ricknmortyandroid.episodes.Episode;
 import com.example.ricknmortyandroid.episodes.EpisodeResponse;
 import com.example.ricknmortyandroid.locations.Location;
@@ -75,13 +76,13 @@ public class Repository {
         }
 
         isFetchingData = true;
-        apiService.getCharacters(currentPage).enqueue(new Callback<CharacterResponse>() {
+        apiService.getCharacters(currentPage).enqueue(new Callback<CharactersListResponse>() {
             @Override
-            public void onResponse(Call<CharacterResponse> call, Response<CharacterResponse> response) {
+            public void onResponse(Call<CharactersListResponse> call, Response<CharactersListResponse> response) {
                 if (response.isSuccessful()) {
-                    CharacterResponse characterResponse = response.body();
-                    if (characterResponse != null) {
-                        List<Character> characters = characterResponse.getResults();
+                    CharactersListResponse charactersListResponse = response.body();
+                    if (charactersListResponse != null) {
+                        List<Character> characters = charactersListResponse.getResults();
                         if (characters != null) {
                             List<Character> currentCharacters = charactersLiveData.getValue();
                             if (currentCharacters == null) {
@@ -91,7 +92,7 @@ public class Repository {
                             charactersLiveData.setValue(currentCharacters);
                         }
                     }
-                    updatePagination(characterResponse != null ? characterResponse.getInfo() : null);
+                    updatePagination(charactersListResponse != null ? charactersListResponse.getInfo() : null);
                 } else {
                     // Handle error
                 }
@@ -99,7 +100,7 @@ public class Repository {
             }
 
             @Override
-            public void onFailure(Call<CharacterResponse> call, Throwable t) {
+            public void onFailure(Call<CharactersListResponse> call, Throwable t) {
                 // Handle failure
                 isFetchingData = false;
             }
@@ -133,28 +134,31 @@ public class Repository {
         callback.onEpisodesLoaded(episodes);
     }
 
-    public void getCharacter(int characterId, CharacterCallback callback) {
-        Call<Character> call = apiService.getCharacter(characterId);
-        call.enqueue(new Callback<Character>() {
+    public void getCharacterById(int characterId, final CharacterCallback callback) {
+        apiService.getCharacterById(characterId).enqueue(new Callback<CharacterResponse>() {
             @Override
-            public void onResponse(Call<Character> call, Response<Character> response) {
+            public void onResponse(Call<CharacterResponse> call, Response<CharacterResponse> response) {
                 if (response.isSuccessful()) {
-                    Character character = response.body();
-                    if (character != null) {
-                        callback.onCharacterLoaded(character);
+                    CharacterResponse characterResponse = response.body();
+                    if (characterResponse != null) {
+                        Character character = characterResponse.getResult();
+                        if (character != null) {
+                            callback.onCharacterLoaded(character);
+                        }
                     }
                 } else {
+                    // Handle error
                     callback.onFailure(response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<Character> call, Throwable t) {
+            public void onFailure(Call<CharacterResponse> call, Throwable t) {
+                // Handle failure
                 callback.onFailure(t.getMessage());
             }
         });
     }
-
     public void loadLocations() {
         if (isFetchingData || isDonePagingData) {
             return;

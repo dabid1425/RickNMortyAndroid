@@ -21,9 +21,9 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.character_detail_activity);
 
         int characterId = getIntent().getIntExtra("characterId", 0);
-
         characterDetailViewModel = new ViewModelProvider(this).get(CharacterDetailViewModel.class);
         characterDetailViewModel.loadCharacterDetail(characterId);
+
 
         characterDetailViewModel.getCharacterData().observe(this, character -> {
             // Update the UI with the character data

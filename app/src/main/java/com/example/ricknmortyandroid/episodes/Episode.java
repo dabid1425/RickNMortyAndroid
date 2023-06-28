@@ -3,15 +3,10 @@ package com.example.ricknmortyandroid.episodes;
 public class Episode {
     private int id;
     private String name;
-    private String airDate;
+    private String air_date;
     private String episode;
-
-    public Episode(int id, String name, String airDate, String episode) {
-        this.id = id;
-        this.name = name;
-        this.airDate = airDate;
-        this.episode = episode;
-    }
+    private String url;
+    private String created;
 
     public int getId() {
         return id;
@@ -30,11 +25,11 @@ public class Episode {
     }
 
     public String getAirDate() {
-        return airDate;
+        return air_date;
     }
 
     public void setAirDate(String airDate) {
-        this.airDate = airDate;
+        this.air_date = airDate;
     }
 
     public String getEpisode() {
@@ -43,5 +38,21 @@ public class Episode {
 
     public void setEpisode(String episode) {
         this.episode = episode;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 }

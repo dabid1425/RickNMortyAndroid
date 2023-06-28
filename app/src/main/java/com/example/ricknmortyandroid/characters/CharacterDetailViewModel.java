@@ -10,53 +10,50 @@ import com.example.ricknmortyandroid.episodes.Episode;
 import java.util.List;
 
 public class CharacterDetailViewModel extends ViewModel {
-    private MutableLiveData<Character> characterData = new MutableLiveData<>();
-    private MutableLiveData<List<Episode>> episodesLiveData = new MutableLiveData<>();
-    private Repository characterRepository;
+    private Repository repository;
+    private MutableLiveData<Character> characterLiveData;
+    private MutableLiveData<List<Episode>> episodesLiveData;
 
     public CharacterDetailViewModel() {
-        characterRepository = Repository.getInstance();
+        repository = Repository.getInstance();
+        characterLiveData = new MutableLiveData<>();
+        episodesLiveData = new MutableLiveData<>();
+    }
+
+    public void loadCharacterDetail(int characterId) {
+        repository.getCharacterById(characterId, new Repository.CharacterCallback() {
+            @Override
+            public void onCharacterLoaded(Character character) {
+                characterLiveData.setValue(character);
+                // Fetch episodes associated with the character
+                List<String> episodeUrls = character.getEpisode();
+                if (episodeUrls != null && !episodeUrls.isEmpty()) {
+                    repository.getEpisodes(episodeUrls, new Repository.EpisodesCallback() {
+                        @Override
+                        public void onEpisodesLoaded(List<Episode> episodes) {
+                            episodesLiveData.setValue(episodes);
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            // Handle failure
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Handle failure
+            }
+        });
     }
 
     public LiveData<Character> getCharacterData() {
-        return characterData;
+        return characterLiveData;
     }
 
     public LiveData<List<Episode>> getEpisodesData() {
         return episodesLiveData;
-    }
-
-    public void loadCharacterDetail(int characterId) {
-        characterRepository.getCharacter(characterId, new Repository.CharacterCallback() {
-            @Override
-            public void onCharacterLoaded(Character character) {
-                characterData.setValue(character);
-
-                // Retrieve the list of episode URLs from the character
-                List<String> episodeUrls = character.getEpisode();
-
-                // Load episodes based on the list of URLs
-                loadEpisodes(episodeUrls);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                // Handle error case
-            }
-        });
-    }
-
-    private void loadEpisodes(List<String> episodeUrls) {
-        characterRepository.getEpisodes(episodeUrls, new Repository.EpisodesCallback() {
-            @Override
-            public void onEpisodesLoaded(List<Episode> episodes) {
-                episodesLiveData.setValue(episodes);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                // Handle error case
-            }
-        });
     }
 }

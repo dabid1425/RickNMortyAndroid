@@ -1,19 +1,18 @@
 package com.example.ricknmortyandroid.characters;
-
 import com.example.ricknmortyandroid.API.Info;
 
-import com.example.ricknmortyandroid.API.Info;
+import java.util.List;
 
-public class CharacterResponse {
-    private Character result;
+public class CharactersListResponse {
+    private List<Character> results;
     private Info info;
 
-    public Character getResult() {
-        return result;
+    public List<Character> getResults() {
+        return results;
     }
 
-    public void setResult(Character result) {
-        this.result = result;
+    public void setResults(List<Character> results) {
+        this.results = results;
     }
 
     public Info getInfo() {
