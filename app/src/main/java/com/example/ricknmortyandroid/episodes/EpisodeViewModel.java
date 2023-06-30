@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.ricknmortyandroid.API.Repository;
+import com.example.ricknmortyandroid.characters.Character;
 
 import java.util.List;
 
@@ -24,4 +25,11 @@ public class EpisodeViewModel extends ViewModel {
         repository.loadEpisodes();
     }
 
+    public Episode getEpisodeAtIndex(int index) {
+        List<Episode> episodes = episodesLiveData.getValue();
+        if (episodes != null && index >= 0 && index < episodes.size()) {
+            return episodes.get(index);
+        }
+        return null;
+    }
 }

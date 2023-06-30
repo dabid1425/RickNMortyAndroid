@@ -1,4 +1,5 @@
 package com.example.ricknmortyandroid.episodes;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.characters.Character;
+import com.example.ricknmortyandroid.characters.CharacterDetailsActivity;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 
 public class EpisodesInShowFragment extends Fragment {
 
@@ -44,6 +48,20 @@ public class EpisodesInShowFragment extends Fragment {
             episodeAdapter.setEpisodes(episodes);
             isLoading = false;
             loadingIndicator.setVisibility(View.GONE);
+        });
+
+        //opens episode detail activity
+        episodeAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Episode selectedEpisode = episodeViewModel.getEpisodeAtIndex(position);
+
+                // Create an Intent to start the new activity
+                Intent intent = new Intent(requireContext(), EpisodeDetailActivity.class);
+                intent.putExtra("episodeId", selectedEpisode.getUrl());
+
+                startActivity(intent);
+            }
         });
 
         episodesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

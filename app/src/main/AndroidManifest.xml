@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +16,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -27,12 +25,24 @@
         </activity>
         <activity
             android:name=".characters.CharacterDetailsActivity"
-            android:label="Character Details"
-            android:parentActivityName=".MainActivity">
+            android:label="Character Details">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
+                android:name="androidx.core.app.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".episodes.EpisodeDetailActivity"
+            android:label="Episode Details">
+            <meta-data
+                android:name="androidx.core.app.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".locations.LocationDetailActivity"
+            android:label="Location Details">
+            <meta-data
+                android:name="androidx.core.app.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
     </application>
-
 </manifest>

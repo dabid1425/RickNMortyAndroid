@@ -1,5 +1,6 @@
 package com.example.ricknmortyandroid.characters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.episodes.Episode;
 import com.example.ricknmortyandroid.episodes.EpisodeAdapter;
+import com.example.ricknmortyandroid.episodes.EpisodeDetailActivity;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 
 public class CharacterDetailsActivity extends AppCompatActivity {
     private CharacterDetailViewModel characterDetailViewModel;
@@ -48,8 +52,17 @@ public class CharacterDetailsActivity extends AppCompatActivity {
             RecyclerView episodesRecyclerView = findViewById(R.id.episodesRecyclerView);
             episodeAdapter = new EpisodeAdapter();
             episodesRecyclerView.setAdapter(episodeAdapter);
-            episodesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            episodesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+            episodeAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Episode selectedEpisode = characterDetailViewModel.getEpisodeAtIndex(position);
+                    Intent intent = new Intent(CharacterDetailsActivity.this, EpisodeDetailActivity.class);
+                    intent.putExtra("episodeId", selectedEpisode.getUrl());
+                    startActivity(intent);
+                }
+            });
             // Observe the episodes data and update the adapter
             characterDetailViewModel.getEpisodesData().observe(this, episodes -> {
                 episodeAdapter.setEpisodes(episodes);

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 
 
 import java.util.ArrayList;
@@ -19,12 +20,14 @@ import java.util.List;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
     private List<Location> locations = new ArrayList<>();
-
+    private OnItemClickListener onItemClickListener;
     public void setLocations(List<Location> locations) {
         this.locations = locations;
         notifyDataSetChanged();
     }
-
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
     @NonNull
     @Override
     public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,7 +47,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         return locations.size();
     }
 
-    static class LocationViewHolder extends RecyclerView.ViewHolder {
+    class LocationViewHolder extends RecyclerView.ViewHolder {
         private TextView nameTextView;
         private TextView typeTextView;
         private TextView dimensionTextView;
@@ -56,6 +59,17 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             linearLayoutBackground = itemView.findViewById(R.id.linearLayoutBackground);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             dimensionTextView = itemView.findViewById(R.id.dimensionTextView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            onItemClickListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
 
         void bind(Location location) {

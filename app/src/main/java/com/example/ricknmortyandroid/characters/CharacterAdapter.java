@@ -1,6 +1,5 @@
 package com.example.ricknmortyandroid.characters;
 
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.Enums.Status;
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -106,7 +106,5 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
     }
 
     // Interface for item click callback
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
+
 }

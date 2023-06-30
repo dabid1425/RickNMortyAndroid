@@ -48,6 +48,13 @@ public class CharacterDetailViewModel extends ViewModel {
             }
         });
     }
+    public Episode getEpisodeAtIndex(int index) {
+        List<Episode> episodes = episodesLiveData.getValue();
+        if (episodes != null && index >= 0 && index < episodes.size()) {
+            return episodes.get(index);
+        }
+        return null;
+    }
 
     public LiveData<Character> getCharacterData() {
         return characterLiveData;

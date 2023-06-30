@@ -1,11 +1,14 @@
 package com.example.ricknmortyandroid.episodes;
 
+import java.util.List;
+
 public class Episode {
     private int id;
     private String name;
     private String air_date;
     private String episode;
     private String url;
+    private List<String> characters;
     private String created;
 
     public int getId() {
@@ -54,5 +57,13 @@ public class Episode {
 
     public void setCreated(String created) {
         this.created = created;
+    }
+
+    public List<String> getCharacters() {
+        return characters;
+    }
+
+    public void setCharacters(List<String> characters) {
+        this.characters = characters;
     }
 }

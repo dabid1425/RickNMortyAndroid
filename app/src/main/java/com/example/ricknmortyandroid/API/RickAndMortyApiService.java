@@ -4,6 +4,7 @@ import com.example.ricknmortyandroid.characters.Character;
 import com.example.ricknmortyandroid.characters.CharactersListResponse;
 import com.example.ricknmortyandroid.episodes.Episode;
 import com.example.ricknmortyandroid.episodes.EpisodeResponse;
+import com.example.ricknmortyandroid.locations.Location;
 import com.example.ricknmortyandroid.locations.LocationResponse;
 
 import retrofit2.Call;
@@ -33,4 +34,6 @@ public interface RickAndMortyApiService {
     Call<Episode> getEpisodeByUrl(
             @Url String episodeUrl
     );
+    @GET
+    Call<Location> getLocationByUrl(@Url String url);
 }

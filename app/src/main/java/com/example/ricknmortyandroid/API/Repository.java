@@ -26,8 +26,20 @@ public class Repository {
         void onEpisodesLoaded(List<Episode> episodes);
         void onFailure(String errorMessage);
     }
+    public interface CharactersCallback {
+        void onCharactersLoaded(List<Character> episodes);
+        void onFailure(String errorMessage);
+    }
+    public interface LocationCallBack {
+        void onLocationLoaded(Location location);
+        void onFailure(String errorMessage);
+    }
     public interface CharacterCallback {
         void onCharacterLoaded(Character character);
+        void onFailure(String errorMessage);
+    }
+    public interface EpisodeCallback {
+        void onEpisodeLoaded(Episode episode);
         void onFailure(String errorMessage);
     }
     private RickAndMortyApiService apiService;
@@ -91,6 +103,31 @@ public class Repository {
             }
         });
     }
+    public void getCharacters(List<String> characterUrls, final CharactersCallback callback) {
+        final List<Character> characters = new ArrayList<>();
+        final AtomicInteger count = new AtomicInteger(characterUrls.size());
+
+        for (String url : characterUrls) {
+            getCharacterById(url, new CharacterCallback() {
+                @Override
+                public void onCharacterLoaded(Character character) {
+                    characters.add(character);
+                    int remaining = count.decrementAndGet();
+                    if (remaining == 0) {
+                        callback.onCharactersLoaded(characters);
+                    }
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    int remaining = count.decrementAndGet();
+                    if (remaining == 0) {
+                        callback.onFailure(errorMessage);
+                    }
+                }
+            });
+        }
+    }
 
 
     public void loadCharacters() {
@@ -130,28 +167,37 @@ public class Repository {
         });
     }
 
+    public void getEpisodeById(String episodeUrl, final EpisodeCallback callback) {
+        apiService.getEpisodeByUrl(episodeUrl).enqueue(new Callback<Episode>() {
+            @Override
+            public void onResponse(Call<Episode> call, Response<Episode> response) {
+                if (response.isSuccessful()) {
+                    Episode episode = response.body();
+                    if (episode != null) {
+                        callback.onEpisodeLoaded(episode);
+                    }
+                } else {
+                    // Handle error
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Episode> call, Throwable t) {
+                // Handle failure
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
     public void getEpisodes(List<String> episodeUrls, final EpisodesCallback callback) {
-        List<Call<Episode>> episodeCalls = new ArrayList<>();
+        final List<Episode> episodes = new ArrayList<>();
+        final AtomicInteger count = new AtomicInteger(episodeUrls.size());
 
         for (String url : episodeUrls) {
-            Call<Episode> episodeCall = apiService.getEpisodeByUrl(url);
-            episodeCalls.add(episodeCall);
-        }
-
-        final List<Episode> episodes = new ArrayList<>();
-        final AtomicInteger count = new AtomicInteger(episodeCalls.size());
-
-        for (Call<Episode> call : episodeCalls) {
-            call.enqueue(new Callback<Episode>() {
+            getEpisodeById(url, new EpisodeCallback() {
                 @Override
-                public void onResponse(Call<Episode> call, Response<Episode> response) {
-                    if (response.isSuccessful()) {
-                        Episode episode = response.body();
-                        if (episode != null) {
-                            episodes.add(episode);
-                        }
-                    }
-
+                public void onEpisodeLoaded(Episode episode) {
+                    episodes.add(episode);
                     int remaining = count.decrementAndGet();
                     if (remaining == 0) {
                         callback.onEpisodesLoaded(episodes);
@@ -159,7 +205,7 @@ public class Repository {
                 }
 
                 @Override
-                public void onFailure(Call<Episode> call, Throwable t) {
+                public void onFailure(String errorMessage) {
                     int remaining = count.decrementAndGet();
                     if (remaining == 0) {
                         callback.onEpisodesLoaded(episodes);
@@ -169,6 +215,28 @@ public class Repository {
         }
     }
 
+    public void getLocationById(String locationUrl, final LocationCallBack callback) {
+        apiService.getLocationByUrl(locationUrl).enqueue(new Callback<Location>() {
+            @Override
+            public void onResponse(Call<Location> call, Response<Location> response) {
+                if (response.isSuccessful()) {
+                    Location location = response.body();
+                    if (location != null) {
+                        callback.onLocationLoaded(location);
+                    }
+                } else {
+                    // Handle error
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Location> call, Throwable t) {
+                // Handle failure
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
 
 
 

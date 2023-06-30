@@ -1,4 +1,5 @@
 package com.example.ricknmortyandroid.locations;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.episodes.Episode;
+import com.example.ricknmortyandroid.episodes.EpisodeDetailActivity;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 
 public class LocationsInShowFragment extends Fragment {
 
@@ -44,6 +48,19 @@ public class LocationsInShowFragment extends Fragment {
             locationAdapter.setLocations(locations);
             isLoading = false;
             loadingIndicator.setVisibility(View.GONE);
+        });
+
+        locationAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Location selectedLocation = locationViewModel.getLocation(position);
+
+                // Create an Intent to start the new activity
+                Intent intent = new Intent(requireContext(), LocationDetailActivity.class);
+                intent.putExtra("locationId", selectedLocation.getUrl());
+
+                startActivity(intent);
+            }
         });
 
         characterRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

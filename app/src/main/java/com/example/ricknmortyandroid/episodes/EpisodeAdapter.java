@@ -14,14 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.Enums.Status;
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 import com.example.ricknmortyandroid.locations.Location;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeViewHolder> {
+public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeViewHolder>  {
     private List<Episode> episodes = new ArrayList<>();
+
+    private OnItemClickListener onItemClickListener;
 
     public void setEpisodes(List<Episode> episodes) {
         this.episodes = episodes;
@@ -47,7 +50,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
         return episodes.size();
     }
 
-    static class EpisodeViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+
+    class EpisodeViewHolder extends RecyclerView.ViewHolder {
         private TextView nameTextView;
         private TextView airDateTextView;
         private TextView episodeTextView;
@@ -59,6 +67,17 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
             linearLayoutBackground = itemView.findViewById(R.id.linearLayoutBackground);
             airDateTextView = itemView.findViewById(R.id.airDateTextView);
             episodeTextView = itemView.findViewById(R.id.episodeTextView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            onItemClickListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
 
         void bind(Episode episode) {

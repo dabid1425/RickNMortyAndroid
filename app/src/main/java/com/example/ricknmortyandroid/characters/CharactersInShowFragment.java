@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.R;
+import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
 
 public class CharactersInShowFragment extends Fragment {
 
@@ -65,7 +66,7 @@ public class CharactersInShowFragment extends Fragment {
                 }
             }
         });
-        characterAdapter.setOnItemClickListener(new CharacterAdapter.OnItemClickListener() {
+        characterAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Character selectedCharacter = characterViewModel.getCharacterAtIndex(position);
