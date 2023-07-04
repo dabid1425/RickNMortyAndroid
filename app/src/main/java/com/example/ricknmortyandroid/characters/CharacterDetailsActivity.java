@@ -2,9 +2,12 @@ package com.example.ricknmortyandroid.characters;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +26,11 @@ public class CharacterDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.character_detail_activity);
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
 
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
         String characterUrl = getIntent().getStringExtra("characterId");
         characterDetailViewModel = new ViewModelProvider(this).get(CharacterDetailViewModel.class);
         characterDetailViewModel.loadCharacterDetail(characterUrl);
@@ -68,5 +75,14 @@ public class CharacterDetailsActivity extends AppCompatActivity {
                 episodeAdapter.setEpisodes(episodes);
             });
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

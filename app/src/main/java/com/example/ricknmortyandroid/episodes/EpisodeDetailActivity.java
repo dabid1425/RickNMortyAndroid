@@ -2,8 +2,11 @@ package com.example.ricknmortyandroid.episodes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +24,11 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.episode_detail_activity);
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
 
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
         String episodeId = getIntent().getStringExtra("episodeId");
         episodeDetailViewModel = new ViewModelProvider(this).get(EpisodeDetailViewModel.class);
         episodeDetailViewModel.loadEpisodeDetail(episodeId);
@@ -60,5 +67,14 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                 characterAdapter.setCharacters(characters);
             });
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
