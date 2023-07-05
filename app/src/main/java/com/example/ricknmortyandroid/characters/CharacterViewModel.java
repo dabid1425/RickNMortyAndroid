@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.ricknmortyandroid.API.Repository;
 import com.example.ricknmortyandroid.Enums.Status;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
 public class CharacterViewModel extends ViewModel {
     private Repository repository;
     private MutableLiveData<List<Character>> charactersLiveData;
+    private MutableLiveData<List<Character>> charactersSearchFilteredLiveData;
+    private boolean searchTextCleared = true;
 
     public CharacterViewModel() {
         repository = new Repository();
@@ -28,8 +31,37 @@ public class CharacterViewModel extends ViewModel {
         repository.loadCharacters();
     }
 
-    public void sortCharactersByStatus(Status status) {
+    public boolean getSearchTextCleared(){
+        return searchTextCleared;
+    }
+
+    public void setSearchTextCleared() {
+        this.searchTextCleared = !this.searchTextCleared;
+    }
+
+    public void setCharactersSearchFilteredLiveData(String searchString) {
+        charactersSearchFilteredLiveData = new MutableLiveData<>();
         List<Character> characters = charactersLiveData.getValue();
+        List<Character> filteredCharacter = new ArrayList<>();
+        for(Character character : characters){
+            if (character.getName().contains(searchString)) {
+                filteredCharacter.add(character);
+            }
+        }
+        charactersSearchFilteredLiveData.setValue(filteredCharacter);
+    }
+
+    public void setData(List<Character> characters){
+        if (searchTextCleared) {
+            charactersLiveData.setValue(characters);
+        } else {
+            charactersSearchFilteredLiveData.setValue(characters);
+        }
+    }
+
+    public void sortCharactersByStatus(Status status) {
+        List<Character> characters = searchTextCleared
+                ? charactersLiveData.getValue() : charactersSearchFilteredLiveData.getValue();
         if (characters != null) {
             Collections.sort(characters, new Comparator<Character>() {
                 @Override
@@ -40,12 +72,13 @@ public class CharacterViewModel extends ViewModel {
             if (status == Status.ALIVE) {
                 Collections.reverse(characters);
             }
-            charactersLiveData.setValue(characters);
+            setData(characters);
         }
     }
 
     public void sortCharactersByNameAscending() {
-        List<Character> characters = charactersLiveData.getValue();
+        List<Character> characters = searchTextCleared
+                ? charactersLiveData.getValue(): charactersSearchFilteredLiveData.getValue();
         if (characters != null) {
             Collections.sort(characters, new Comparator<Character>() {
                 @Override
@@ -53,12 +86,13 @@ public class CharacterViewModel extends ViewModel {
                     return c1.getName().compareToIgnoreCase(c2.getName());
                 }
             });
-            charactersLiveData.setValue(characters);
+            setData(characters);
         }
     }
 
     public void sortCharactersByNameDescending() {
-        List<Character> characters = charactersLiveData.getValue();
+        List<Character> characters = searchTextCleared
+                ? charactersLiveData.getValue(): charactersSearchFilteredLiveData.getValue();
         if (characters != null) {
             Collections.sort(characters, new Comparator<Character>() {
                 @Override
@@ -66,11 +100,12 @@ public class CharacterViewModel extends ViewModel {
                     return c2.getName().compareToIgnoreCase(c1.getName());
                 }
             });
-            charactersLiveData.setValue(characters);
+            setData(characters);
         }
     }
     public Character getCharacterAtIndex(int index) {
-        List<Character> characters = charactersLiveData.getValue();
+        List<Character> characters = searchTextCleared
+                ? charactersLiveData.getValue() : charactersSearchFilteredLiveData.getValue();
         if (characters != null && index >= 0 && index < characters.size()) {
             return characters.get(index);
         }

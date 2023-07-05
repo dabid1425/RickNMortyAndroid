@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraintFilter"
     android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/inputEditText"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginEnd="@dimen/fifteen_dp"
                 android:background="@null"
                 android:fontFamily="@font/sf_compact_regular"
@@ -129,6 +130,7 @@
         app:strokeWidth="@dimen/one_dp">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/sortImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

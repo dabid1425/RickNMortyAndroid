@@ -1,14 +1,17 @@
 package com.example.ricknmortyandroid.characters;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ricknmortyandroid.R;
 import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
+import com.google.android.material.imageview.ShapeableImageView;
+
+import customView.LayoutFilterModel;
+import customView.LayoutFilterViewModel;
 
 public class CharactersInShowFragment extends Fragment {
 
@@ -49,6 +56,30 @@ public class CharactersInShowFragment extends Fragment {
             loadingIndicator.setVisibility(View.GONE);
         });
 
+        ConstraintLayout constraintFilter = view.findViewById(R.id.constraintFilter);
+        LayoutFilterModel filterModel = new LayoutFilterModel("Search Characters",
+                R.drawable.ic_search_product,R.drawable.ic_filter,R.drawable.ic_sort);
+        LayoutFilterViewModel filterViewModel = new LayoutFilterViewModel(filterModel);
+
+        AppCompatEditText inputEditText = view.findViewById(R.id.inputEditText);
+        inputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        ShapeableImageView filterImageView = view.findViewById(R.id.filterImageView);
         characterRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
