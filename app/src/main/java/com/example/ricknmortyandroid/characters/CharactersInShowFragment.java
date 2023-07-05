@@ -62,6 +62,7 @@ public class CharactersInShowFragment extends Fragment {
         LayoutFilterViewModel filterViewModel = new LayoutFilterViewModel(filterModel);
 
         AppCompatEditText inputEditText = view.findViewById(R.id.inputEditText);
+        inputEditText.setHint(filterViewModel.getPlaceHolderText());
         inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
