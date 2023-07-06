@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
+    <customView.LayoutFilterView
         android:id="@+id/constraintFilter"
-        layout="@layout/layout_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />
@@ -15,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/constraintFilter"
-        android:layout_marginTop="8dp" />
+        android:layout_margin="10dp" />
 
     <ProgressBar
         android:id="@+id/loadingIndicator"

@@ -1,4 +1,6 @@
 package com.example.ricknmortyandroid.characters;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +12,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -17,11 +20,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ricknmortyandroid.Enums.DisplayStyle;
+import com.example.ricknmortyandroid.Enums.SelectedDialogOption;
+import com.example.ricknmortyandroid.Enums.Sort;
 import com.example.ricknmortyandroid.R;
 import com.example.ricknmortyandroid.interfaces.OnItemClickListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import customView.LayoutFilterModel;
+import customView.LayoutFilterView;
 import customView.LayoutFilterViewModel;
 
 public class CharactersInShowFragment extends Fragment {
@@ -30,7 +38,7 @@ public class CharactersInShowFragment extends Fragment {
     private CharacterAdapter characterAdapter;
     private ProgressBar loadingIndicator;
     private boolean isLoading = false;
-
+    private LayoutFilterViewModel filterViewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,36 +59,33 @@ public class CharactersInShowFragment extends Fragment {
         characterRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         characterViewModel.getCharacters().observe(getViewLifecycleOwner(), characters -> {
+            //characters = characterViewModel.resort(characters);
             characterAdapter.setCharacters(characters);
             isLoading = false;
             loadingIndicator.setVisibility(View.GONE);
         });
 
-        ConstraintLayout constraintFilter = view.findViewById(R.id.constraintFilter);
+        LayoutFilterView constraintFilter = view.findViewById(R.id.constraintFilter);
         LayoutFilterModel filterModel = new LayoutFilterModel("Search Characters",
-                R.drawable.ic_search_product,R.drawable.ic_filter,R.drawable.ic_sort);
-        LayoutFilterViewModel filterViewModel = new LayoutFilterViewModel(filterModel);
-
-        AppCompatEditText inputEditText = view.findViewById(R.id.inputEditText);
-        inputEditText.setHint(filterViewModel.getPlaceHolderText());
-        inputEditText.addTextChangedListener(new TextWatcher() {
+                R.drawable.ic_search_product, R.drawable.ic_filter, R.drawable.ic_sort);
+        filterViewModel = new LayoutFilterViewModel(filterModel);
+        constraintFilter.setOnClickListenerAndViewModel(filterViewModel, new LayoutFilterView.LayoutFilterViewClickCallBack() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public void inputEditTextChanged(String text) {
+                characterViewModel.setCharactersSearchFilteredLiveData(text);
+                characterAdapter.setCharacters(characterViewModel.getCharacters().getValue());
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public void filterViewSelected() {
+                displayFilterSelectedView();
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
+            public void sortViewSelected() {
+                displaySortSelectedView();
             }
         });
-
-        ShapeableImageView filterImageView = view.findViewById(R.id.filterImageView);
         characterRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -111,6 +116,47 @@ public class CharactersInShowFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void displayFilterSelectedView() {
+        displayDialog(R.string.viewBy, DisplayStyle.getStringArray(),
+                characterViewModel.getDisplayStyle(),SelectedDialogOption.DISPLAYSTYLE);
+    }
+
+    private void displaySortSelectedView() {
+        displayDialog(R.string.sortBy, Sort.getStringArray(),
+                characterViewModel.getSortStyleItem(), SelectedDialogOption.SORTSTYLE);
+    }
+
+    private void displayDialog(int title, String[] singleItems, int checkedItem
+            , SelectedDialogOption selectedDialogOption) {
+        AlertDialog alertDialog;
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(title))
+                .setSingleChoiceItems(singleItems, checkedItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (selectedDialogOption == SelectedDialogOption.DISPLAYSTYLE) {
+                            //characterViewModel.viewBy(which);
+                        } else {
+                            characterViewModel.sortBy(which);
+                            characterViewModel.setSortStyle(Sort.values()[which]);
+                        }
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog = builder.create();
+
+        alertDialog.show();
+
     }
 
 }
