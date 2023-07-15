@@ -59,7 +59,6 @@ public class CharactersInShowFragment extends Fragment {
         characterRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         characterViewModel.getCharacters().observe(getViewLifecycleOwner(), characters -> {
-            //characters = characterViewModel.resort(characters);
             characterAdapter.setCharacters(characters);
             isLoading = false;
             loadingIndicator.setVisibility(View.GONE);

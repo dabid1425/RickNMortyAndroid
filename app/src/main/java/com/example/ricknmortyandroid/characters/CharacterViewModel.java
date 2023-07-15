@@ -31,15 +31,6 @@ public class CharacterViewModel extends ViewModel {
         return searchTextCleared ?
                 charactersLiveData : charactersSearchFilteredLiveData;
     }
-//    public void resort(List><){
-//        if (sortStyle != Sort.NONE) {
-//            if (sortStyle == Sort.ASCENDING || sortStyle == Sort.DESCENDING){
-//                sortCharactersByName(sortStyle == Sort.ASCENDING);
-//            } else {
-//                sortCharactersByStatus(Status.fromString(sortStyle.getValue().toLowerCase()));
-//            }
-//        }
-//    }
     public void setDisplayStyle(DisplayStyle displayStyle) {
         this.displayStyle = displayStyle;
     }
